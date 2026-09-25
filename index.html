@@ -6,22 +6,22 @@
 
 <title>梁文宜 Wun-Yi Liang｜影像製作 Portfolio</title>
 <meta name="description" content="梁文宜，國立政治大學廣播電視學系四年級生，累積編導、聲音、攝影等不同崗位的影像創作經驗。代表作品包括劇情短片《INTRO:》與心理戰實境節目《誰是躺分王》。">
-<link rel="canonical" href="#">
+<link rel="canonical" href="https://my-website-git-main-whitney10.vercel.app/">
 <meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="梁文宜 Wun-Yi Liang｜影像製作 Portfolio">
 <meta property="og:description" content="國立政治大學廣播電視學系四年級生，累積編導、聲音、攝影等不同崗位的影像創作經驗。">
-<meta property="og:image" content="https://your-domain.com/og-image.jpg">
-<meta property="og:url" content="#">
+<meta property="og:image" content="https://my-website-git-main-whitney10.vercel.app/images/hero/hero-1.jpg">
+<meta property="og:url" content="https://my-website-git-main-whitney10.vercel.app/">
 <meta property="og:locale" content="zh_TW">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="梁文宜 Wun-Yi Liang｜影像製作 Portfolio">
 <meta name="twitter:description" content="國立政治大學廣播電視學系四年級生，累積編導、聲音、攝影等不同崗位的影像創作經驗。">
-<meta name="twitter:image" content="https://your-domain.com/og-image.jpg">
+<meta name="twitter:image" content="https://my-website-git-main-whitney10.vercel.app/images/hero/hero-1.jpg">
 
 <!-- JSON-LD -->
 <script type="application/ld+json">
@@ -33,7 +33,7 @@
   "jobTitle": "影像製作／廣播電視學系學生",
   "description": "國立政治大學廣播電視學系四年級生，持續累積編導、聲音、攝影等不同形式的影像創作經驗。",
   "email": "mailto:wunyi20050224@gmail.com",
-  "url": "#",
+  "url": "https://my-website-git-main-whitney10.vercel.app/",
   "sameAs": [
     "https://www.instagram.com/wnyi__224",
     "https://www.linkedin.com/in/文宜-梁-06b66a43a"
@@ -47,14 +47,18 @@
 
 <style>
   :root{
-    --bg: #0A0515;
-    --surface: #130E1E;
-    --surface-2: #191228;
+    --bg: #2A3335;           /* 原本的黑色底色，改為明度較低、飽和度較低的青灰色 */
     --line: rgba(245,243,250,0.14);
     --text: rgba(255,255,255,0.9);
     --text-solid: #F5F3FA;
     --muted: #A9B4B8;
     --accent: #8FBFC0;
+
+    --surface: #E7E4DE;       /* 灰白色卡片（聯絡方式） */
+    --surface-text: #20272A;
+    --surface-muted: #4E585A;
+    --surface-accent: #2E6764;
+
     --max-w: 760px;
   }
 
@@ -105,7 +109,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: rgba(10,5,21,0.86);
+    background: rgba(42,51,53,0.86);
     backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--line);
   }
@@ -186,7 +190,7 @@
     font-weight: 700;
   }
 
-  /* ---------- HERO：21:9 電影感滿版視覺 ---------- */
+  /* ---------- HERO：21:9 電影感滿版視覺 + 照片輪播 ---------- */
   .hero-frame{
     background: #000;
     padding: 10px 0;
@@ -203,6 +207,45 @@
       linear-gradient(155deg, #CBDBD7 0%, #8FA9AA 32%, #52696D 62%, #212C31 100%);
   }
 
+  /* 照片輪播層：置於文字後方，整體不透明度 30% */
+  .hero-slideshow{
+    position: absolute;
+    inset: 0;
+    opacity: 0.3;
+  }
+
+  .hero-slideshow .slide{
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    animation: heroFade 18s infinite;
+  }
+
+  /* 依序放入 3 張照片；路徑對應 images/hero/ 資料夾內的檔案 */
+  .hero-slideshow .slide:nth-child(1){
+    background-image: url("images/hero/hero-1.jpg");
+    animation-delay: 0s;
+  }
+  .hero-slideshow .slide:nth-child(2){
+    background-image: url("images/hero/hero-2.jpg");
+    animation-delay: 6s;
+  }
+  .hero-slideshow .slide:nth-child(3){
+    background-image: url("images/hero/hero-3.jpg");
+    animation-delay: 12s;
+  }
+
+  @keyframes heroFade{
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    28%  { opacity: 1; }
+    33%  { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
   /* 模擬窗邊薄紗的柔霧光形 */
   .hero-visual::before{
     content: "";
@@ -215,6 +258,7 @@
     filter: blur(22px);
     transform: rotate(5deg);
     opacity: 0.65;
+    z-index: 1;
   }
 
   /* 讓底部文字保持清晰的暗角漸層 */
@@ -223,6 +267,7 @@
     position: absolute;
     inset: 0;
     background: linear-gradient(0deg, rgba(4,8,10,0.72) 0%, rgba(4,8,10,0.22) 45%, rgba(4,8,10,0) 68%);
+    z-index: 1;
   }
 
   .grain{
@@ -230,6 +275,7 @@
     inset: 0;
     opacity: 0.06;
     mix-blend-mode: overlay;
+    z-index: 1;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   }
 
@@ -311,76 +357,83 @@
     color: var(--text);
   }
 
-  /* ---------- WORKS ---------- */
-  .works-grid{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+  /* ---------- WORKS：五列全螢幕照片 ---------- */
+  #works > .wrap{
+    padding-bottom: 8px;
   }
 
-  @media (min-width: 640px){
-    .works-grid{
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  article.work{
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 24px;
+  .work-row{
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: flex-end;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-bottom: 1px solid var(--line);
   }
 
-  .work .reel-label{
+  .work-row::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(4,8,10,0.78) 0%, rgba(4,8,10,0.28) 42%, rgba(4,8,10,0) 72%);
+    pointer-events: none;
+  }
+
+  .work-row-inner{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-top: 64px;
+    padding-bottom: 56px;
+  }
+
+  .work-row .reel-label{
+    display: block;
     color: var(--accent);
     font-size: 0.78rem;
     letter-spacing: 0.06em;
+    margin-bottom: 14px;
   }
 
-  .work h3{
-    margin: 0;
-    font-size: 1.15rem;
-    line-height: 1.4;
+  .work-row h3{
+    font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+    line-height: 1.35;
+    margin: 0 0 10px 0;
+    color: rgba(255,255,255,0.9);
+    text-shadow: 0 2px 20px rgba(0,0,0,0.35);
   }
 
-  .work .work-type{
-    color: var(--muted);
-    font-size: 0.85rem;
-    margin: 0;
+  .work-row .work-meta{
+    color: rgba(255,255,255,0.78);
+    font-size: 0.92rem;
+    margin: 0 0 16px 0;
   }
 
-  .work .work-role{
-    color: var(--muted);
-    font-size: 0.85rem;
-    margin: 0;
+  .work-row .desc{
+    max-width: 52ch;
+    color: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    margin: 0 0 20px 0;
   }
 
-  .work .work-role span{
-    color: var(--text);
-  }
-
-  .work p.desc{
-    margin: 0;
-    font-size: 0.95rem;
-    color: var(--text);
-  }
-
-  .work .work-link{
-    margin-top: auto;
-    padding-top: 4px;
+  .work-row .work-link{
+    display: inline-block;
+    color: var(--accent);
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
+    text-decoration: underline;
   }
 
-  .work .work-link.is-empty{
-    color: var(--muted);
-    font-style: normal;
+  .work-row .work-link.is-empty{
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.92rem;
   }
 
-  /* ---------- CONTACT ---------- */
+  /* ---------- CONTACT（灰白卡片） ---------- */
   .contact-list{
     list-style: none;
     margin: 0;
@@ -396,18 +449,20 @@
     gap: 12px;
     padding: 14px 16px;
     background: var(--surface);
-    border: 1px solid var(--line);
+    border: 1px solid rgba(32,39,42,0.12);
     border-radius: 6px;
+    color: var(--surface-text);
   }
 
   .contact-list svg{
     flex-shrink: 0;
     width: 20px;
     height: 20px;
+    color: var(--surface-text);
   }
 
   .contact-list a{
-    color: var(--text);
+    color: var(--surface-text);
     text-decoration: none;
     font-size: 0.95rem;
     word-break: break-word;
@@ -415,11 +470,11 @@
 
   .contact-list a:hover,
   .contact-list a:focus-visible{
-    color: var(--accent);
+    color: var(--surface-accent);
   }
 
   .contact-list .label{
-    color: var(--muted);
+    color: var(--surface-muted);
     font-size: 0.75rem;
     display: block;
     margin-bottom: 2px;
@@ -461,6 +516,11 @@
   <section class="hero" aria-labelledby="hero-heading">
     <div class="hero-frame">
       <div class="hero-visual" role="img" aria-label="窗邊光影的空景意象，柔和逆光與薄紗窗簾，冷色調中帶著一點暖光，呼應青春與淡淡憂鬱的氛圍">
+        <div class="hero-slideshow" aria-hidden="true">
+          <div class="slide"></div>
+          <div class="slide"></div>
+          <div class="slide"></div>
+        </div>
         <div class="grain" aria-hidden="true"></div>
         <div class="hero-content">
           <div class="wrap">
@@ -494,67 +554,70 @@
     <div class="wrap">
       <span class="timecode mono">00:01:30:00 — WORKS</span>
       <h2 id="works-heading">作品</h2>
+    </div>
 
-      <div class="works-grid">
+    <div class="work-row"
+         style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #C9D9D5 0%, #86A2A3 32%, #4C6367 62%, #1F2A2D 100%);"
+         role="img" aria-label="《INTRO:》劇照示意">
+      <div class="work-row-inner wrap">
+        <span class="reel-label mono">REEL 01</span>
+        <h3>《INTRO:》</h3>
+        <p class="work-meta">劇情短片・編劇、導演、剪輯</p>
+        <p class="desc">歌唱比賽前日，小滿的感冒愈演愈烈，而這卻成了逃避的辦法。為什麼要選擇留下？又因為什麼選擇離開？</p>
+        <a class="work-link" href="https://drive.google.com/file/d/1kxvZlEY4UUMkJXP941eZeXjPhoHZR0A7/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          觀看短片《INTRO:》（Google Drive，另開新分頁）
+        </a>
+      </div>
+    </div>
 
-        <article class="work">
-          <span class="reel-label mono">REEL 01</span>
-          <h3>短片《INTRO:》</h3>
-          <p class="work-type">類型：劇情短片</p>
-          <p class="work-role">職務：<span>編劇、導演、剪輯</span></p>
-          <p class="desc">歌唱比賽前日，小滿的感冒愈演愈烈，而這卻成了逃避的辦法。為什麼要選擇留下？又因為什麼選擇離開？</p>
-          <p class="work-link">
-            <a href="https://drive.google.com/file/d/1kxvZlEY4UUMkJXP941eZeXjPhoHZR0A7/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-              觀看短片《INTRO:》（Google Drive，另開新分頁）
-            </a>
-          </p>
-        </article>
+    <div class="work-row"
+         style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #D7D2C2 0%, #A79C86 30%, #5C544A 65%, #24211D 100%);"
+         role="img" aria-label="《誰是躺分王》節目劇照示意">
+      <div class="work-row-inner wrap">
+        <span class="reel-label mono">REEL 02</span>
+        <h3>《誰是躺分王》</h3>
+        <p class="work-meta">心理戰實境節目・節目（攝影）組長</p>
+        <p class="desc">「每個人都討厭躺分仔，但每個人都想躺分。」</p>
+        <a class="work-link" href="https://youtu.be/46tX9FNVGv4?si=WUBTu4FBAxaLgteX" target="_blank" rel="noopener noreferrer">
+          觀看節目《誰是躺分王》（YouTube，另開新分頁）
+        </a>
+      </div>
+    </div>
 
-        <article class="work">
-          <span class="reel-label mono">REEL 02</span>
-          <h3>節目《誰是躺分王》</h3>
-          <p class="work-type">類型：心理戰實境節目</p>
-          <p class="work-role">職務：<span>節目（攝影）組長</span></p>
-          <p class="desc">「每個人都討厭躺分仔，但每個人都想躺分。」</p>
-          <p class="work-link">
-            <a href="https://youtu.be/46tX9FNVGv4?si=WUBTu4FBAxaLgteX" target="_blank" rel="noopener noreferrer">
-              觀看節目《誰是躺分王》（YouTube，另開新分頁）
-            </a>
-          </p>
-        </article>
+    <div class="work-row"
+         style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #CFE0DB 0%, #8BAFA8 35%, #4A6B64 65%, #1E2E2A 100%);"
+         role="img" aria-label="《哺哺》劇照示意">
+      <div class="work-row-inner wrap">
+        <span class="reel-label mono">REEL 03</span>
+        <h3>《哺哺》</h3>
+        <p class="work-meta">劇情短片・收音師、混音師</p>
+        <a class="work-link" href="https://drive.google.com/file/d/1xHsBO50oC0E1o9fNU3KAFCmwtruYLtGS/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          觀看短片《哺哺》（Google Drive，另開新分頁）
+        </a>
+      </div>
+    </div>
 
-        <article class="work">
-          <span class="reel-label mono">REEL 03</span>
-          <h3>短片《哺哺》</h3>
-          <p class="work-type">類型：劇情短片</p>
-          <p class="work-role">職務：<span>收音師、混音師</span></p>
-          <p class="work-link">
-            <a href="https://drive.google.com/file/d/1xHsBO50oC0E1o9fNU3KAFCmwtruYLtGS/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-              觀看短片《哺哺》（Google Drive，另開新分頁）
-            </a>
-          </p>
-        </article>
+    <div class="work-row"
+         style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #E1D3C6 0%, #B79E88 32%, #6B5644 65%, #2B2119 100%);"
+         role="img" aria-label="《火侯》劇照示意">
+      <div class="work-row-inner wrap">
+        <span class="reel-label mono">REEL 04</span>
+        <h3>《火侯》</h3>
+        <p class="work-meta">劇情短片・收音師</p>
+        <p class="work-link is-empty">尚無公開連結</p>
+      </div>
+    </div>
 
-        <article class="work">
-          <span class="reel-label mono">REEL 04</span>
-          <h3>短片《火侯》</h3>
-          <p class="work-type">類型：劇情短片</p>
-          <p class="work-role">職務：<span>收音師</span></p>
-          <p class="work-link is-empty">尚無公開連結</p>
-        </article>
-
-        <article class="work">
-          <span class="reel-label mono">REEL 05</span>
-          <h3>棚內直播節目《留下的房客》</h3>
-          <p class="work-type">類型：棚內直播節目</p>
-          <p class="work-role">職務：<span>音訊組長</span></p>
-          <p class="work-link">
-            <a href="https://www.youtube.com/live/mzGxYek5iNA?si=tH-gxGb1WUtxjJ48&amp;t=1538" target="_blank" rel="noopener noreferrer">
-              觀看《留下的房客》直播片段（YouTube，另開新分頁）
-            </a>
-          </p>
-        </article>
-
+    <div class="work-row"
+         style="background-image: url('images/works/work-5.jpg'), linear-gradient(160deg, #D2D8DA 0%, #93A3A8 32%, #51636A 65%, #20292D 100%);"
+         role="img" aria-label="《留下的房客》棚內直播節目劇照示意">
+      <div class="work-row-inner wrap">
+        <span class="reel-label mono">REEL 05</span>
+        <h3>《留下的房客》</h3>
+        <p class="work-meta">棚內直播節目・音訊組長</p>
+        <a class="work-link" href="https://www.youtube.com/live/mzGxYek5iNA?si=tH-gxGb1WUtxjJ48&amp;t=1538" target="_blank" rel="noopener noreferrer">
+          觀看《留下的房客》直播片段（YouTube，另開新分頁）
+        </a>
       </div>
     </div>
   </section>
