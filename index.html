@@ -44,23 +44,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- 手寫感字體（獨立載入，避免影響其他字體） -->
+<!-- 備用手寫字體（獨立載入，避免影響其他字體） -->
 <link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
 
 <style>
+  /* 手寫字體：辰宇落雁體 2.0（OFL 開源授權，可商用）。載入失敗時會自動退回 Iansui */
+  @font-face{
+    font-family: "ChenYuluoyan";
+    src: url("https://cdn.jsdelivr.net/gh/Chenyu-otf/chenyuluoyan_thin@main/ChenYuluoyan-2.0-Thin.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
   :root{
-    --bg: #2A3335;           /* 低明度、低飽和度的青灰色 */
-    --line: rgba(245,243,250,0.14);
-    --text: rgba(255,255,255,0.9);
-    --text-solid: #F5F3FA;
-    --muted: #A9B4B8;
-    --accent: #8FBFC0;
+    /* 下午五點的暖霧配色 */
+    --bg: #F0E2D2;              /* 薄霧蜜桃奶油色 */
+    --ink: #4A3129;             /* 深暖棕（淺底上的文字） */
+    --muted: #6E5347;           /* 次要文字 */
+    --line: rgba(74,49,41,0.16);
+    --accent: #94441A;          /* 夕陽赭紅（淺底上的連結、標記） */
+    --sun: #F7CE9C;             /* 夕陽金（照片上的連結、標記） */
+    --photo-text: rgba(255,255,255,0.9);
+    --photo-text-soft: rgba(255,255,255,0.8);
 
-    --surface: #E7E4DE;       /* 灰白色卡片（聯絡方式） */
-    --surface-text: #20272A;
-    --surface-muted: #4E585A;
-    --surface-accent: #2E6764;
-
+    --surface: #FBF4EA;         /* 聯絡卡片：更亮的奶霧色 */
     --max-w: 760px;
   }
 
@@ -78,7 +86,7 @@
   body{
     margin: 0;
     background: var(--bg);
-    color: var(--text);
+    color: var(--ink);
     font-family: "Noto Serif TC", "Hiragino Mincho ProN", "PingFang TC", serif;
     line-height: 1.8;
     -webkit-font-smoothing: antialiased;
@@ -113,6 +121,12 @@
     border-radius: 2px;
   }
 
+  /* 照片上的連結，焦點框改用夕陽金以確保看得見 */
+  .hero a:focus-visible,
+  .work-row a:focus-visible{
+    outline-color: var(--sun);
+  }
+
   .wrap{
     max-width: var(--max-w);
     margin: 0 auto;
@@ -124,7 +138,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: rgba(42,51,53,0.86);
+    background: rgba(240,226,210,0.88);
     backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--line);
   }
@@ -143,7 +157,7 @@
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
-    color: var(--text-solid);
+    color: var(--ink);
     text-decoration: none;
   }
 
@@ -163,7 +177,7 @@
 
   nav.nav-links a:hover,
   nav.nav-links a:focus-visible{
-    color: var(--text);
+    color: var(--ink);
   }
 
   .rec-dot{
@@ -181,7 +195,7 @@
     50% { opacity: 0.35; }
   }
 
-  /* ---------- SECTION SCAFFOLD（已移除區塊之間的橫線） ---------- */
+  /* ---------- SECTION SCAFFOLD ---------- */
   section{
     padding: 72px 0;
   }
@@ -206,7 +220,7 @@
   }
 
   .hero-frame{
-    background: #000;
+    background: #17100D;       /* 帶一點暖意的近黑邊 */
     padding: 10px 0;
   }
 
@@ -217,15 +231,15 @@
     min-height: 420px;
     overflow: hidden;
     background:
-      radial-gradient(ellipse at 22% 22%, rgba(255,248,236,0.55) 0%, rgba(255,248,236,0) 42%),
-      linear-gradient(155deg, #CBDBD7 0%, #8FA9AA 32%, #52696D 62%, #212C31 100%);
+      radial-gradient(ellipse at 22% 22%, rgba(255,228,178,0.65) 0%, rgba(255,228,178,0) 45%),
+      linear-gradient(155deg, #F6DDBF 0%, #E9B893 30%, #B98671 62%, #5A3D3A 100%);
   }
 
-  /* 照片輪播層：置於文字後方，整體不透明度 30% */
+  /* 照片輪播層：置於文字後方，整體不透明度 60% */
   .hero-slideshow{
     position: absolute;
     inset: 0;
-    opacity: 0.3;
+    opacity: 0.6;
   }
 
   .hero-slideshow .slide{
@@ -259,6 +273,7 @@
     100% { opacity: 0; }
   }
 
+  /* 斜斜灑進來的柔霧光束 */
   .hero-visual::before{
     content: "";
     position: absolute;
@@ -266,18 +281,19 @@
     right: 10%;
     width: 34%;
     height: 140%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.04) 70%);
+    background: linear-gradient(180deg, rgba(255,240,215,0.5), rgba(255,240,215,0.04) 70%);
     filter: blur(22px);
     transform: rotate(5deg);
     opacity: 0.65;
     z-index: 1;
   }
 
+  /* 底部暖棕暗角，確保白字清楚 */
   .hero-visual::after{
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba(4,8,10,0.72) 0%, rgba(4,8,10,0.22) 45%, rgba(4,8,10,0) 68%);
+    background: linear-gradient(0deg, rgba(48,26,20,0.78) 0%, rgba(48,26,20,0.3) 45%, rgba(48,26,20,0) 70%);
     z-index: 1;
   }
 
@@ -304,7 +320,7 @@
   }
 
   .hero .timecode{
-    color: rgba(255,255,255,0.75);
+    color: var(--photo-text-soft);
     margin-bottom: 16px;
   }
 
@@ -314,12 +330,12 @@
     margin: 0 0 12px 0;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: rgba(255,255,255,0.9);
-    text-shadow: 0 2px 20px rgba(0,0,0,0.35);
+    color: var(--photo-text);
+    text-shadow: 0 2px 20px rgba(40,20,14,0.4);
   }
 
   .hero .role{
-    color: rgba(255,255,255,0.78);
+    color: var(--photo-text-soft);
     font-size: 1rem;
     margin: 0 0 14px 0;
   }
@@ -328,7 +344,7 @@
     max-width: 42ch;
     margin: 0 0 28px 0;
     font-size: 1rem;
-    color: rgba(255,255,255,0.9);
+    color: var(--photo-text);
   }
 
   .hero-actions{
@@ -345,31 +361,31 @@
     font-size: 0.9rem;
     font-weight: 500;
     font-family: "Noto Serif TC", serif;
-    border: 1px solid rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.6);
   }
 
   .btn-primary{
-    background: rgba(255,255,255,0.9);
-    color: #1E2A2C;
-    border-color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.92);
+    color: #3A241D;
+    border-color: rgba(255,255,255,0.92);
   }
 
   .btn-secondary{
-    color: rgba(255,255,255,0.9);
+    color: var(--photo-text);
   }
 
   .btn:hover, .btn:focus-visible{
-    opacity: 0.82;
+    opacity: 0.85;
   }
 
-  /* ---------- ABOUT：個人照片底圖 + 右側手寫感文字 ---------- */
+  /* ---------- ABOUT：個人照片底圖 + 右側手寫文字 + 對角簽名 ---------- */
   .about{
     position: relative;
     padding: 0;
     min-height: 80vh;
     min-height: 80dvh;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     overflow: hidden;
   }
 
@@ -381,65 +397,92 @@
     background-repeat: no-repeat;
   }
 
-  /* 右側加深，讓文字清楚 */
+  /* 右側加深讓文字清楚；左上角輕微加深讓簽名清楚 */
   .about::before{
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(270deg, rgba(4,8,10,0.78) 0%, rgba(4,8,10,0.5) 38%, rgba(4,8,10,0) 75%);
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(48,26,20,0.45) 0%, rgba(48,26,20,0) 50%),
+      linear-gradient(270deg, rgba(48,26,20,0.8) 0%, rgba(48,26,20,0.5) 38%, rgba(48,26,20,0) 75%);
     z-index: 1;
   }
 
-  /* 底部漸層融入頁面底色 */
+  /* 底部漸層融入薄霧底色 */
   .about::after{
     content: "";
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 24%;
-    background: linear-gradient(0deg, var(--bg) 0%, rgba(42,51,53,0) 100%);
+    height: 18%;
+    background: linear-gradient(0deg, var(--bg) 0%, rgba(240,226,210,0.6) 45%, rgba(240,226,210,0) 100%);
     z-index: 1;
   }
 
   .about-inner{
     position: relative;
     z-index: 2;
-    width: 100%;
-    padding: 72px 6vw;
+    flex: 1;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 6vw 18vh;
   }
 
+  /* 左上角簽名 */
+  .about-name{
+    align-self: flex-start;
+    margin: 0;
+    font-family: "ChenYuluoyan", "Iansui", "LXGW WenKai TC", "Noto Serif TC", serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    line-height: 1.2;
+    color: var(--photo-text);
+    text-shadow: 0 2px 18px rgba(40,20,14,0.5);
+    transform: rotate(-3deg);
+    transform-origin: left center;
+  }
+
+  /* 右下角文字：靠左對齊、行距較緊、每行字數不同 */
   .about-text{
-    width: min(100%, 440px);
+    align-self: flex-end;
+    width: min(100%, 460px);
+    text-align: left;
   }
 
   .about-text .timecode{
-    color: rgba(255,255,255,0.75);
+    color: var(--photo-text-soft);
   }
 
   .about-text p{
     margin: 0;
-    font-family: "Iansui", "LXGW WenKai TC", "Noto Serif TC", serif;
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    line-height: 2;
-    color: var(--text);
-    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    font-family: "ChenYuluoyan", "Iansui", "LXGW WenKai TC", "Noto Serif TC", serif;
+    font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+    line-height: 1.5;
+    color: var(--photo-text);
+    text-shadow: 0 2px 14px rgba(40,20,14,0.55);
+  }
+
+  .about-text p + p{
+    margin-top: 0.9em;
   }
 
   @media (max-width: 640px){
     .about{
       min-height: 90vh;
       min-height: 90dvh;
-      align-items: flex-end;
     }
     .about::before{
-      background: linear-gradient(0deg, rgba(4,8,10,0.85) 0%, rgba(4,8,10,0.55) 55%, rgba(4,8,10,0.05) 100%);
+      background:
+        radial-gradient(ellipse at 0% 0%, rgba(48,26,20,0.45) 0%, rgba(48,26,20,0) 55%),
+        linear-gradient(0deg, rgba(48,26,20,0.88) 0%, rgba(48,26,20,0.6) 55%, rgba(48,26,20,0.05) 100%);
     }
     .about-inner{
-      padding: 48px 24px 64px;
-      justify-content: flex-start;
+      padding: 40px 24px 20vh;
+    }
+    .about-text{
+      align-self: stretch;
+      width: 100%;
     }
   }
 
@@ -473,12 +516,12 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba(4,8,10,0.78) 0%, rgba(4,8,10,0.28) 42%, rgba(4,8,10,0) 72%);
+    background: linear-gradient(0deg, rgba(48,26,20,0.82) 0%, rgba(48,26,20,0.42) 45%, rgba(48,26,20,0) 75%);
     pointer-events: none;
     z-index: 1;
   }
 
-  /* 第一列：頂部由頁面底色漸層帶出照片，「作品」標題壓在上面 */
+  /* 第一列：頂部由薄霧底色漸層帶出照片，「作品」標題壓在上面 */
   .work-row--first::before{
     content: "";
     position: absolute;
@@ -486,7 +529,7 @@
     left: 0;
     right: 0;
     height: 60%;
-    background: linear-gradient(180deg, var(--bg) 0%, rgba(42,51,53,0.9) 28%, rgba(42,51,53,0) 100%);
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(240,226,210,0.9) 28%, rgba(240,226,210,0) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -503,7 +546,7 @@
   .works-title h2{
     font-size: clamp(1.8rem, 5vw, 2.6rem);
     margin: 0;
-    color: var(--text);
+    color: var(--ink);
   }
 
   .work-row-inner{
@@ -516,7 +559,7 @@
 
   .work-row .reel-label{
     display: block;
-    color: var(--accent);
+    color: var(--sun);
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     margin-bottom: 14px;
@@ -526,38 +569,38 @@
     font-size: clamp(1.6rem, 4.5vw, 2.4rem);
     line-height: 1.35;
     margin: 0 0 10px 0;
-    color: rgba(255,255,255,0.9);
-    text-shadow: 0 2px 20px rgba(0,0,0,0.35);
+    color: var(--photo-text);
+    text-shadow: 0 2px 20px rgba(40,20,14,0.4);
   }
 
   .work-row .work-meta{
-    color: rgba(255,255,255,0.78);
+    color: var(--photo-text-soft);
     font-size: 0.92rem;
     margin: 0 0 16px 0;
   }
 
   .work-row .desc{
     max-width: 52ch;
-    color: rgba(255,255,255,0.9);
+    color: var(--photo-text);
     font-size: 1rem;
     margin: 0 0 20px 0;
   }
 
   .work-row .work-link{
     display: inline-block;
-    color: var(--accent);
+    color: var(--sun);
     font-weight: 500;
     font-size: 0.92rem;
     text-decoration: underline;
   }
 
   .work-row .work-link.is-empty{
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.75);
     text-decoration: none;
     font-size: 0.92rem;
   }
 
-  /* ---------- CONTACT（灰白卡片，標題位置已上移） ---------- */
+  /* ---------- CONTACT ---------- */
   #contact{
     padding-top: 36px;
   }
@@ -577,20 +620,21 @@
     gap: 12px;
     padding: 14px 16px;
     background: var(--surface);
-    border: 1px solid rgba(32,39,42,0.12);
+    border: 1px solid rgba(74,49,41,0.14);
     border-radius: 6px;
-    color: var(--surface-text);
+    color: var(--ink);
+    box-shadow: 0 6px 20px rgba(120,80,50,0.08);
   }
 
   .contact-list svg{
     flex-shrink: 0;
     width: 20px;
     height: 20px;
-    color: var(--surface-text);
+    color: var(--ink);
   }
 
   .contact-list a{
-    color: var(--surface-text);
+    color: var(--ink);
     text-decoration: none;
     font-size: 0.95rem;
     word-break: break-word;
@@ -598,11 +642,11 @@
 
   .contact-list a:hover,
   .contact-list a:focus-visible{
-    color: var(--surface-accent);
+    color: var(--accent);
   }
 
   .contact-list .label{
-    color: var(--surface-muted);
+    color: var(--muted);
     font-size: 0.75rem;
     display: block;
     margin-bottom: 2px;
@@ -668,16 +712,24 @@
 
   <section id="about" class="about" aria-labelledby="about-heading">
     <div class="about-photo"
-         style="background-image: url('images/about/about.jpg'), linear-gradient(120deg, #8FA9AA 0%, #52696D 55%, #212C31 100%);"
+         style="background-image: url('images/about/about.jpg'), linear-gradient(120deg, #F1D3B0 0%, #C99A80 50%, #6B4A44 100%);"
          role="img" aria-label="梁文宜的個人照片"></div>
     <div class="about-inner">
+      <p class="about-name" aria-hidden="true">梁文宜</p>
       <div class="about-text">
         <h2 id="about-heading" class="sr-only">關於我</h2>
         <span class="timecode mono">00:00:15:00 — ABOUT</span>
         <p>
-          搜集生活中有趣的念頭，結合生命經驗建構故事，再反覆勾勒成影像，
-          目標是讓觀眾體驗到獨屬於影像的哭與笑。
-          就讀政大廣電四年級，持續累積不同形式的影像創作經驗，包含編導、聲音、攝影。
+          搜集生活中有趣的念頭，<br>
+          結合生命經驗建構故事，<br>
+          再反覆勾勒成影像，<br>
+          目標是讓觀眾體驗到<br>
+          獨屬於影像的哭與笑。
+        </p>
+        <p>
+          就讀政大廣電四年級，<br>
+          持續累積不同形式的影像創作經驗，<br>
+          包含編導、聲音、攝影。
         </p>
       </div>
     </div>
@@ -687,7 +739,7 @@
 
     <div class="work-row work-row--first">
       <div class="work-bg"
-           style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #C9D9D5 0%, #86A2A3 32%, #4C6367 62%, #1F2A2D 100%);"
+           style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #F3D9BC 0%, #D9A98A 32%, #9A6F62 62%, #4A3430 100%);"
            role="img" aria-label="《INTRO:》劇照"></div>
       <div class="works-title">
         <div class="wrap">
@@ -708,7 +760,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #D7D2C2 0%, #A79C86 30%, #5C544A 65%, #24211D 100%);"
+           style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #F0D2B4 0%, #CFA487 30%, #8C6558 65%, #40302C 100%);"
            role="img" aria-label="《誰是躺分王》節目劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 02</span>
@@ -723,7 +775,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #CFE0DB 0%, #8BAFA8 35%, #4A6B64 65%, #1E2E2A 100%);"
+           style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #F5DDC2 0%, #E0B091 35%, #A57565 65%, #4B3733 100%);"
            role="img" aria-label="《哺哺》劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 03</span>
@@ -737,7 +789,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #E1D3C6 0%, #B79E88 32%, #6B5644 65%, #2B2119 100%);"
+           style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #F7D6AE 0%, #E2A67E 32%, #A6684F 65%, #4D2F27 100%);"
            role="img" aria-label="《火侯》劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 04</span>
@@ -749,7 +801,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-5.png'), linear-gradient(160deg, #D2D8DA 0%, #93A3A8 32%, #51636A 65%, #20292D 100%);"
+           style="background-image: url('images/works/work-5.png'), linear-gradient(160deg, #EEDAC6 0%, #CDA893 32%, #8E6D66 65%, #3F312F 100%);"
            role="img" aria-label="《留下的房客》棚內直播節目劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 05</span>
