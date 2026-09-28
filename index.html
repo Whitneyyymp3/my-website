@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -45,10 +44,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- 手寫感字體（獨立載入，避免影響其他字體） -->
+<link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --bg: #2A3335;           /* 原本的黑色底色，改為明度較低、飽和度較低的青灰色 */
+    --bg: #2A3335;           /* 低明度、低飽和度的青灰色 */
     --line: rgba(245,243,250,0.14);
     --text: rgba(255,255,255,0.9);
     --text-solid: #F5F3FA;
@@ -85,6 +86,19 @@
 
   .mono{
     font-family: "IBM Plex Mono", "Noto Sans TC", monospace;
+  }
+
+  /* 僅供螢幕閱讀器讀取的文字 */
+  .sr-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
   }
 
   a{
@@ -167,14 +181,9 @@
     50% { opacity: 0.35; }
   }
 
-  /* ---------- SECTION SCAFFOLD ---------- */
+  /* ---------- SECTION SCAFFOLD（已移除區塊之間的橫線） ---------- */
   section{
     padding: 72px 0;
-    border-bottom: 1px solid var(--line);
-  }
-
-  section:last-of-type{
-    border-bottom: none;
   }
 
   .timecode{
@@ -192,6 +201,10 @@
   }
 
   /* ---------- HERO：21:9 電影感滿版視覺 + 照片輪播 ---------- */
+  .hero{
+    padding: 0;
+  }
+
   .hero-frame{
     background: #000;
     padding: 10px 0;
@@ -212,7 +225,7 @@
   .hero-slideshow{
     position: absolute;
     inset: 0;
-    opacity: 0.5;
+    opacity: 0.3;
   }
 
   .hero-slideshow .slide{
@@ -225,7 +238,6 @@
     animation: heroFade 18s infinite;
   }
 
-  /* 依序放入 3 張照片；路徑對應 images/hero/ 資料夾內的檔案 */
   .hero-slideshow .slide:nth-child(1){
     background-image: url("images/hero/hero-1.jpg");
     animation-delay: 0s;
@@ -247,7 +259,6 @@
     100% { opacity: 0; }
   }
 
-  /* 模擬窗邊薄紗的柔霧光形 */
   .hero-visual::before{
     content: "";
     position: absolute;
@@ -262,7 +273,6 @@
     z-index: 1;
   }
 
-  /* 讓底部文字保持清晰的暗角漸層 */
   .hero-visual::after{
     content: "";
     position: absolute;
@@ -352,15 +362,90 @@
     opacity: 0.82;
   }
 
-  /* ---------- ABOUT ---------- */
-  #about p{
-    max-width: 58ch;
+  /* ---------- ABOUT：個人照片底圖 + 右側手寫感文字 ---------- */
+  .about{
+    position: relative;
+    padding: 0;
+    min-height: 80vh;
+    min-height: 80dvh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .about-photo{
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* 右側加深，讓文字清楚 */
+  .about::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(270deg, rgba(4,8,10,0.78) 0%, rgba(4,8,10,0.5) 38%, rgba(4,8,10,0) 75%);
+    z-index: 1;
+  }
+
+  /* 底部漸層融入頁面底色 */
+  .about::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 24%;
+    background: linear-gradient(0deg, var(--bg) 0%, rgba(42,51,53,0) 100%);
+    z-index: 1;
+  }
+
+  .about-inner{
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 72px 6vw;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .about-text{
+    width: min(100%, 440px);
+  }
+
+  .about-text .timecode{
+    color: rgba(255,255,255,0.75);
+  }
+
+  .about-text p{
+    margin: 0;
+    font-family: "Iansui", "LXGW WenKai TC", "Noto Serif TC", serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    line-height: 2;
     color: var(--text);
+    text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+  }
+
+  @media (max-width: 640px){
+    .about{
+      min-height: 90vh;
+      min-height: 90dvh;
+      align-items: flex-end;
+    }
+    .about::before{
+      background: linear-gradient(0deg, rgba(4,8,10,0.85) 0%, rgba(4,8,10,0.55) 55%, rgba(4,8,10,0.05) 100%);
+    }
+    .about-inner{
+      padding: 48px 24px 64px;
+      justify-content: flex-start;
+    }
   }
 
   /* ---------- WORKS：五列全螢幕照片 ---------- */
-  #works > .wrap{
-    padding-bottom: 8px;
+  #works{
+    padding: 0;
   }
 
   .work-row{
@@ -369,10 +454,19 @@
     min-height: 100dvh;
     display: flex;
     align-items: flex-end;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .work-row:last-child{
+    border-bottom: none;
+  }
+
+  .work-bg{
+    position: absolute;
+    inset: 0;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-bottom: 1px solid var(--line);
   }
 
   .work-row::after{
@@ -381,6 +475,35 @@
     inset: 0;
     background: linear-gradient(0deg, rgba(4,8,10,0.78) 0%, rgba(4,8,10,0.28) 42%, rgba(4,8,10,0) 72%);
     pointer-events: none;
+    z-index: 1;
+  }
+
+  /* 第一列：頂部由頁面底色漸層帶出照片，「作品」標題壓在上面 */
+  .work-row--first::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(180deg, var(--bg) 0%, rgba(42,51,53,0.9) 28%, rgba(42,51,53,0) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .works-title{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding-top: 40px;
+  }
+
+  .works-title h2{
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    margin: 0;
+    color: var(--text);
   }
 
   .work-row-inner{
@@ -434,7 +557,11 @@
     font-size: 0.92rem;
   }
 
-  /* ---------- CONTACT（灰白卡片） ---------- */
+  /* ---------- CONTACT（灰白卡片，標題位置已上移） ---------- */
+  #contact{
+    padding-top: 36px;
+  }
+
   .contact-list{
     list-style: none;
     margin: 0;
@@ -516,7 +643,7 @@
 
   <section class="hero" aria-labelledby="hero-heading">
     <div class="hero-frame">
-      <div class="hero-visual" role="img" aria-label="窗邊光影的空景意象，柔和逆光與薄紗窗簾，冷色調中帶著一點暖光，呼應青春與淡淡憂鬱的氛圍">
+      <div class="hero-visual">
         <div class="hero-slideshow" aria-hidden="true">
           <div class="slide"></div>
           <div class="slide"></div>
@@ -539,27 +666,35 @@
     </div>
   </section>
 
-  <section id="about" aria-labelledby="about-heading">
-    <div class="wrap">
-      <span class="timecode mono">00:00:15:00 — ABOUT</span>
-      <h2 id="about-heading">關於我</h2>
-      <p>
-        搜集生活中有趣的念頭，結合生命經驗建構故事，再反覆勾勒成影像，
-        目標是讓觀眾體驗到獨屬於影像的哭與笑。
-        就讀政大廣電四年級，持續累積不同形式的影像創作經驗，包含編導、聲音、攝影。
-      </p>
+  <section id="about" class="about" aria-labelledby="about-heading">
+    <div class="about-photo"
+         style="background-image: url('images/about/about.jpg'), linear-gradient(120deg, #8FA9AA 0%, #52696D 55%, #212C31 100%);"
+         role="img" aria-label="梁文宜的個人照片"></div>
+    <div class="about-inner">
+      <div class="about-text">
+        <h2 id="about-heading" class="sr-only">關於我</h2>
+        <span class="timecode mono">00:00:15:00 — ABOUT</span>
+        <p>
+          搜集生活中有趣的念頭，結合生命經驗建構故事，再反覆勾勒成影像，
+          目標是讓觀眾體驗到獨屬於影像的哭與笑。
+          就讀政大廣電四年級，持續累積不同形式的影像創作經驗，包含編導、聲音、攝影。
+        </p>
+      </div>
     </div>
   </section>
 
   <section id="works" aria-labelledby="works-heading">
-    <div class="wrap">
-      <span class="timecode mono">00:01:30:00 — WORKS</span>
-      <h2 id="works-heading">作品</h2>
-    </div>
 
-    <div class="work-row"
-         style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #C9D9D5 0%, #86A2A3 32%, #4C6367 62%, #1F2A2D 100%);"
-         role="img" aria-label="《INTRO:》劇照示意">
+    <div class="work-row work-row--first">
+      <div class="work-bg"
+           style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #C9D9D5 0%, #86A2A3 32%, #4C6367 62%, #1F2A2D 100%);"
+           role="img" aria-label="《INTRO:》劇照"></div>
+      <div class="works-title">
+        <div class="wrap">
+          <span class="timecode mono">00:01:30:00 — WORKS</span>
+          <h2 id="works-heading">作品</h2>
+        </div>
+      </div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 01</span>
         <h3>《INTRO:》</h3>
@@ -571,9 +706,10 @@
       </div>
     </div>
 
-    <div class="work-row"
-         style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #D7D2C2 0%, #A79C86 30%, #5C544A 65%, #24211D 100%);"
-         role="img" aria-label="《誰是躺分王》節目劇照示意">
+    <div class="work-row">
+      <div class="work-bg"
+           style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #D7D2C2 0%, #A79C86 30%, #5C544A 65%, #24211D 100%);"
+           role="img" aria-label="《誰是躺分王》節目劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 02</span>
         <h3>《誰是躺分王》</h3>
@@ -585,9 +721,10 @@
       </div>
     </div>
 
-    <div class="work-row"
-         style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #CFE0DB 0%, #8BAFA8 35%, #4A6B64 65%, #1E2E2A 100%);"
-         role="img" aria-label="《哺哺》劇照示意">
+    <div class="work-row">
+      <div class="work-bg"
+           style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #CFE0DB 0%, #8BAFA8 35%, #4A6B64 65%, #1E2E2A 100%);"
+           role="img" aria-label="《哺哺》劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 03</span>
         <h3>《哺哺》</h3>
@@ -598,9 +735,10 @@
       </div>
     </div>
 
-    <div class="work-row"
-         style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #E1D3C6 0%, #B79E88 32%, #6B5644 65%, #2B2119 100%);"
-         role="img" aria-label="《火侯》劇照示意">
+    <div class="work-row">
+      <div class="work-bg"
+           style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #E1D3C6 0%, #B79E88 32%, #6B5644 65%, #2B2119 100%);"
+           role="img" aria-label="《火侯》劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 04</span>
         <h3>《火侯》</h3>
@@ -609,9 +747,10 @@
       </div>
     </div>
 
-    <div class="work-row"
-         style="background-image: url('images/works/work-5.png'), linear-gradient(160deg, #D2D8DA 0%, #93A3A8 32%, #51636A 65%, #20292D 100%);"
-         role="img" aria-label="《留下的房客》棚內直播節目劇照示意">
+    <div class="work-row">
+      <div class="work-bg"
+           style="background-image: url('images/works/work-5.png'), linear-gradient(160deg, #D2D8DA 0%, #93A3A8 32%, #51636A 65%, #20292D 100%);"
+           role="img" aria-label="《留下的房客》棚內直播節目劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 05</span>
         <h3>《留下的房客》</h3>
