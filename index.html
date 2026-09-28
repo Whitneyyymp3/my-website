@@ -58,17 +58,18 @@
   }
 
   :root{
-    /* 下午五點的暖霧配色 */
-    --bg: #F0E2D2;              /* 薄霧蜜桃奶油色 */
-    --ink: #4A3129;             /* 深暖棕（淺底上的文字） */
-    --muted: #6E5347;           /* 次要文字 */
-    --line: rgba(74,49,41,0.16);
-    --accent: #94441A;          /* 夕陽赭紅（淺底上的連結、標記） */
-    --sun: #F7CE9C;             /* 夕陽金（照片上的連結、標記） */
+    /* 下午五點的暖霧配色（整體明度調暗版） */
+    --bg: #D8C3AC;
+    --bg-rgb: 216, 195, 172;
+    --ink: #4A3129;             /* 淺底上的文字 */
+    --muted: #5E453A;           /* 次要文字 */
+    --line: rgba(74,49,41,0.2);
+    --accent: #7F3815;          /* 夕陽赭紅（淺底上的連結、標記） */
+    --sun: #F7CE9C;             /* 夕陽金（照片與黑底上的連結、標記） */
     --photo-text: rgba(255,255,255,0.9);
     --photo-text-soft: rgba(255,255,255,0.8);
 
-    --surface: #FBF4EA;         /* 聯絡卡片：更亮的奶霧色 */
+    --surface: #EADBC8;         /* 聯絡卡片 */
     --max-w: 760px;
   }
 
@@ -81,6 +82,9 @@
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior: auto; }
     *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    /* 減少動態偏好：輪播停在第一張照片 */
+    .hero-slideshow .slide{ animation: none !important; }
+    .hero-slideshow .slide:nth-child(1){ opacity: 1; }
   }
 
   body{
@@ -121,7 +125,8 @@
     border-radius: 2px;
   }
 
-  /* 照片上的連結，焦點框改用夕陽金以確保看得見 */
+  /* 黑底、照片上的連結，焦點框改用夕陽金以確保看得見 */
+  header.site-nav a:focus-visible,
   .hero a:focus-visible,
   .work-row a:focus-visible{
     outline-color: var(--sun);
@@ -133,14 +138,13 @@
     padding: 0 24px;
   }
 
-  /* ---------- NAV ---------- */
+  /* ---------- NAV：黑色 ---------- */
   header.site-nav{
     position: sticky;
     top: 0;
     z-index: 10;
-    background: rgba(240,226,210,0.88);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--line);
+    background: #000;
+    border-bottom: 1px solid rgba(255,255,255,0.14);
   }
 
   .nav-inner{
@@ -157,7 +161,7 @@
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
-    color: var(--ink);
+    color: rgba(255,255,255,0.92);
     text-decoration: none;
   }
 
@@ -170,14 +174,14 @@
   }
 
   nav.nav-links a{
-    color: var(--muted);
+    color: rgba(255,255,255,0.75);
     text-decoration: none;
     font-size: 0.9rem;
   }
 
   nav.nav-links a:hover,
   nav.nav-links a:focus-visible{
-    color: var(--ink);
+    color: #fff;
   }
 
   .rec-dot{
@@ -185,7 +189,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--sun);
     margin-right: 6px;
     animation: pulse 2.4s ease-in-out infinite;
   }
@@ -231,8 +235,8 @@
     min-height: 420px;
     overflow: hidden;
     background:
-      radial-gradient(ellipse at 22% 22%, rgba(255,228,178,0.65) 0%, rgba(255,228,178,0) 45%),
-      linear-gradient(155deg, #F6DDBF 0%, #E9B893 30%, #B98671 62%, #5A3D3A 100%);
+      radial-gradient(ellipse at 22% 22%, rgba(255,214,160,0.55) 0%, rgba(255,214,160,0) 45%),
+      linear-gradient(155deg, #E3C4A0 0%, #D09E78 30%, #9E6D5A 62%, #4A3030 100%);
   }
 
   /* 照片輪播層：置於文字後方，整體不透明度 60% */
@@ -242,6 +246,9 @@
     opacity: 0.6;
   }
 
+  /* 交叉淡入淡出：新一張蓋在上一張上面淡入，上一張等新照片完全出現後才消失，
+     所以過程中只有兩張照片互相過渡，不會露出底色。
+     18 秒一輪，每張停留約 6 秒，淡入 1.5 秒。 */
   .hero-slideshow .slide{
     position: absolute;
     inset: 0;
@@ -249,28 +256,29 @@
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    animation: heroFade 18s infinite;
+    animation: heroFade 18s linear infinite;
   }
 
   .hero-slideshow .slide:nth-child(1){
     background-image: url("images/hero/hero-1.jpg");
-    animation-delay: 0s;
+    animation-delay: -1.5s;   /* 頁面一開始就直接顯示第一張 */
   }
   .hero-slideshow .slide:nth-child(2){
     background-image: url("images/hero/hero-2.jpg");
-    animation-delay: 6s;
+    animation-delay: 4.5s;
   }
   .hero-slideshow .slide:nth-child(3){
     background-image: url("images/hero/hero-3.jpg");
-    animation-delay: 12s;
+    animation-delay: 10.5s;
   }
 
   @keyframes heroFade{
-    0%   { opacity: 0; }
-    4%   { opacity: 1; }
-    28%  { opacity: 1; }
-    33%  { opacity: 0; }
-    100% { opacity: 0; }
+    0%      { opacity: 0; z-index: 2; }
+    8.33%   { opacity: 1; z-index: 2; }
+    33.33%  { opacity: 1; z-index: 1; }
+    41.66%  { opacity: 1; z-index: 1; }
+    41.67%  { opacity: 0; z-index: 0; }
+    100%    { opacity: 0; z-index: 0; }
   }
 
   /* 斜斜灑進來的柔霧光束 */
@@ -281,7 +289,7 @@
     right: 10%;
     width: 34%;
     height: 140%;
-    background: linear-gradient(180deg, rgba(255,240,215,0.5), rgba(255,240,215,0.04) 70%);
+    background: linear-gradient(180deg, rgba(255,232,196,0.45), rgba(255,232,196,0.04) 70%);
     filter: blur(22px);
     transform: rotate(5deg);
     opacity: 0.65;
@@ -416,7 +424,7 @@
     right: 0;
     bottom: 0;
     height: 18%;
-    background: linear-gradient(0deg, var(--bg) 0%, rgba(240,226,210,0.6) 45%, rgba(240,226,210,0) 100%);
+    background: linear-gradient(0deg, var(--bg) 0%, rgba(var(--bg-rgb),0.6) 45%, rgba(var(--bg-rgb),0) 100%);
     z-index: 1;
   }
 
@@ -521,15 +529,18 @@
     z-index: 1;
   }
 
-  /* 第一列：頂部由薄霧底色漸層帶出照片，「作品」標題壓在上面 */
+  /* 第一列：只在「作品」標題後方鋪一小段薄霧底色，再往下漸層帶出照片 */
   .work-row--first::before{
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 60%;
-    background: linear-gradient(180deg, var(--bg) 0%, rgba(240,226,210,0.9) 28%, rgba(240,226,210,0) 100%);
+    height: 240px;
+    background: linear-gradient(180deg,
+      rgba(var(--bg-rgb),1) 0%,
+      rgba(var(--bg-rgb),1) 55%,
+      rgba(var(--bg-rgb),0) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -545,6 +556,7 @@
 
   .works-title h2{
     font-size: clamp(1.8rem, 5vw, 2.6rem);
+    line-height: 1.3;
     margin: 0;
     color: var(--ink);
   }
@@ -620,10 +632,10 @@
     gap: 12px;
     padding: 14px 16px;
     background: var(--surface);
-    border: 1px solid rgba(74,49,41,0.14);
+    border: 1px solid rgba(74,49,41,0.18);
     border-radius: 6px;
     color: var(--ink);
-    box-shadow: 0 6px 20px rgba(120,80,50,0.08);
+    box-shadow: 0 6px 20px rgba(100,64,40,0.1);
   }
 
   .contact-list svg{
@@ -712,7 +724,7 @@
 
   <section id="about" class="about" aria-labelledby="about-heading">
     <div class="about-photo"
-         style="background-image: url('images/about/about.jpg'), linear-gradient(120deg, #F1D3B0 0%, #C99A80 50%, #6B4A44 100%);"
+         style="background-image: url('images/about/about.jpg'), linear-gradient(120deg, #E2BE98 0%, #B38264 50%, #5A3F3A 100%);"
          role="img" aria-label="梁文宜的個人照片"></div>
     <div class="about-inner">
       <p class="about-name" aria-hidden="true">梁文宜</p>
@@ -739,7 +751,7 @@
 
     <div class="work-row work-row--first">
       <div class="work-bg"
-           style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #F3D9BC 0%, #D9A98A 32%, #9A6F62 62%, #4A3430 100%);"
+           style="background-image: url('images/works/work-1.jpg'), linear-gradient(155deg, #E2C3A2 0%, #C48F72 32%, #85594F 62%, #3E2A27 100%);"
            role="img" aria-label="《INTRO:》劇照"></div>
       <div class="works-title">
         <div class="wrap">
@@ -760,7 +772,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #F0D2B4 0%, #CFA487 30%, #8C6558 65%, #40302C 100%);"
+           style="background-image: url('images/works/work-2.jpg'), linear-gradient(160deg, #DDBF9F 0%, #B98E74 30%, #7A5449 65%, #372724 100%);"
            role="img" aria-label="《誰是躺分王》節目劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 02</span>
@@ -775,7 +787,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #F5DDC2 0%, #E0B091 35%, #A57565 65%, #4B3733 100%);"
+           style="background-image: url('images/works/work-3.jpg'), linear-gradient(150deg, #E4C6A6 0%, #CC9C7E 35%, #90625A 65%, #3F2E2B 100%);"
            role="img" aria-label="《哺哺》劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 03</span>
@@ -789,7 +801,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #F7D6AE 0%, #E2A67E 32%, #A6684F 65%, #4D2F27 100%);"
+           style="background-image: url('images/works/work-4.jpg'), linear-gradient(145deg, #E6BF92 0%, #CE936B 32%, #935A45 65%, #41271F 100%);"
            role="img" aria-label="《火侯》劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 04</span>
@@ -801,7 +813,7 @@
 
     <div class="work-row">
       <div class="work-bg"
-           style="background-image: url('images/works/work-5.png'), linear-gradient(160deg, #EEDAC6 0%, #CDA893 32%, #8E6D66 65%, #3F312F 100%);"
+           style="background-image: url('images/works/work-5.png'), linear-gradient(160deg, #DBC3AD 0%, #B99680 32%, #7B5C56 65%, #352928 100%);"
            role="img" aria-label="《留下的房客》棚內直播節目劇照"></div>
       <div class="work-row-inner wrap">
         <span class="reel-label mono">REEL 05</span>
