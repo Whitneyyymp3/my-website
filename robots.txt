@@ -62,4 +62,5 @@ Allow: /
 User-agent: Diffbot
 Allow: /
 
-Sitemap: https://your-domain.com/sitemap.xml
+# 之後如果有建立 sitemap.xml，再把下面這行取消註解並確認網址：
+# Sitemap: https://my-website-git-main-whitney10.vercel.app/sitemap.xml
